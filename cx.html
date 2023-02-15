@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>光遇蜡烛查询工具</title>
+  <style>
+      body {
+        /* 背景图片自己替换链接 */
+    background-image: url('https://pan.t1qq.com/view.php/8d5e2b81684e298cfa22121876b59bc4.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100%;
+    }
+    body {
+      background-color: #F0F0F0;
+      font-family: Arial, sans-serif;
+    }
+    
+    .container {
+        opacity: 0.75;
+          width: 100%;
+     text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #FFFFFF;
+      padding: 20px;
+      border-radius: 10px;
+      /*margin-top: 30px;*/
+      box-shadow: 0px 0px 10px 0px #BBBBBB;
+    }
+    
+    @media (max-width: 500px) {
+      .container {
+        width: 85%;
+      }
+    }
+    
+    @media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+}
+    @media (max-width: 320px) {
+  body {
+    font-size: 10px;
+  }
+}
+    
+    h1 {
+      text-align: center;
+      color: #444444;
+    }
+    
+    input[type="text"] {
+      width: 90%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #BBBBBB;
+      margin-bottom: 20px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #444444;
+      color: #FFFFFF;
+      border: 0px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    input[type="submit"]:hover {
+      background-color: #222222;
+    }
+    
+     .results {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #BBBBBB;
+    margin-top: 20px;
+    text-align: center;
+   }
+   
+   .results p {
+    font-size: 17px;
+    margin-bottom: 7px;
+   }
+   
+  #results-text, #result-candle span, #result-cause span, #result-change span, #result-time span {
+    font-size: 15px;
+    font-weight: bold;
+    display: inline-block;
+   }
+    
+    .candle-type {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 4px solid #ccc;
+    }
+    span {
+     display: block;
+     font-size: 16px;
+     text-align: center;
+      margin: 6px auto;
+    }
+        a {
+      display: inline-block;
+      text-align: center;
+      background-image: linear-gradient(to right top, #3b5dff, #008fff, #00b4ff, #00d4ff, #91effc);
+      padding: 10px;
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: bold;
+      background-color: #FFFFFF;
+      color: #ff0000;
+      border-radius: 5px;
+      border: 1px solid #BBBBBB;
+      margin-bottom: 20px;
+    }
+    
+    a:hover {
+      background-color: #222222;
+      color: #FFFFFF;
+    }
+    .db {
+        text-align: center;
+        justify-content: center;
+        font-size: 15px;
+        font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>光遇蜡烛查询工具</h1>
+    <form id="query-form">
+  <label>
+    蜡烛类型:
+    <select id="type-input" class="candle-type">
+      <option value="bl">白蜡烛</option>
+      <option value="jl">季节蜡烛</option>
+    </select>
+  </label>
+  <br />
+  <label>   <br> 
+  <input type="text" id="id-input" placeholder="请输入 ID">
+          <span>提示：ID可在光遇小精灵里面获取，发送id，例如4c447577-8032-44fe-877f-xxxxxxxxxxxx</span>
+  </label>
+  <br />
+      <input type="submit" value="查询" >
+      <!--id="submit-button"-->
+</form>
+    <div class="results">
+              <p>结果：</p>
+      <div id="results-text"></div>
+    <p id="result-candle"><span>提交即可查看结果</span></p>
+   <p id="result-cause"><span>ID可在光遇小精灵里面获取</span></p>
+  <p id="result-change"><span>可选白蜡烛和季节蜡烛</span></p>
+   <p id="result-time"><span>——温暖的灵魂，终将会相遇——</span></p>
+    </div>
+      <br />
+    <a href="url">光遇获取id详细教程</a>
+    <span class="db">Copyright © 傲娇不太冷</span>
+  </div>
+  <script>
+  
+const form = document.getElementById("query-form");
+const typeInput = document.getElementById("type-input");
+const idInput = document.getElementById("id-input");
+
+form.addEventListener("submit", event => {
+  event.preventDefault();
+
+  if (!typeInput.value) {
+    alert("缺少类型参数！");
+    return;
+  }
+
+  if (!idInput.value) {
+    alert("请输入正确的id");
+    return;
+  }
+  
+  const type = typeInput.value;
+  const id = idInput.value;
+  // 这里是api
+//  申请接口地址：https://api.t1qq.com/user/tool?id=6
+  const url = 'https://api.t1qq.com/api/sky/gycx?key=这里填key&type=' + type + '&id=' + id;
+
+  fetch(url, {
+    method: 'GET',
+    timeout: 10000
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.code === '200') {
+        document.getElementById('results-text').innerHTML = `查询状态：查询成功`;
+        document.getElementById('result-candle').innerHTML = `剩余蜡烛数量: ${data.candle}`;
+        document.getElementById('result-cause').innerHTML = `变化原因: ${data.cause}`;
+        document.getElementById('result-change').innerHTML = `变化数量: ${data.change}`;   
+        document.getElementById('result-time').innerHTML = `变化时间: ${data.time}`;  
+      } else {
+        document.getElementById('results-text').innerHTML = `查询失败，服务器繁忙！：${data.msg}`;
+      }
+    })
+    .catch(function(error) {
+      console.error(error);
+      document.getElementById('results-text').innerHTML = '查询失败，近期未查询到数据或者ID未正确！请稍后重试：' + error.message;
+    });
+});
+
+
+
+  </script>
+</body>
+</html>
